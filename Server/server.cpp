@@ -62,12 +62,20 @@ int main(){
 
             Shell curr_shell;
 
+            curr_shell.get_pwd(buffer);
+
+            const char* var = "hello\0";
+            std::cout << var << " " << strlen(var) << std::endl;
+
+            send(newSocket, buffer, strlen(buffer), 0);
+
             while(true){
                 recv(newSocket, buffer, 1024, 0);
-                if(strncmp(buffer, ":exit", 5) == 0){                                                                       // TODO: fix comparison with strcmp as for not anything that starts with :exit will disconnect the user
+                if(strncmp(buffer, ":q", 2) == 0){                                                                      // TODO: fix comparison with strcmp as for not anything that starts with :exit will disconnect the user
                     printf("Disconnected from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
                     break;
                 }else{
+                    buffer[strlen(buffer)-1] = '\0';                                                                    // TODO: smt wrong with buffer size
                     printf("Client: %s; buffer size: %lu\n", buffer, strlen(buffer));
                     size_t buffer_size = strlen(buffer);
                     curr_shell.exec_line(buffer, &buffer_size);
@@ -76,12 +84,16 @@ int main(){
 
                 }
             }
+
+            close(newSocket);
+
+            return 0;
         }
 
     }
 
-    close(newSocket);
 
 
-    return 0;
+
+
 }

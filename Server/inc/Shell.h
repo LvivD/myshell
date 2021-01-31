@@ -5,13 +5,12 @@
 #ifndef MYSHELL_SHELL_H
 #define MYSHELL_SHELL_H
 
-//
-
 #include <cstddef>
 #include <cstring>
 #include <string>
 #include <vector>
 #include <iostream>
+#include <filesystem>
 
 class Shell {
 
@@ -22,11 +21,16 @@ public:
     // max size of buff is max_buff_size;
     int exec_line(char *buff, size_t *len_buff, size_t max_buff_size=1024);
 
+    // puts current directory of the shell in buffer
+    int get_pwd(char *buff, size_t max_buff_size=1024);
+
 private:
 
-    std::vector<std::string> parse_line(char *buff, size_t len_buff);
+    std::filesystem::path curr_path = "~";
+
+    // split line by spaces and store result in vector
+    std::vector<std::string> split_line(char *buff, size_t len_buff);
 
 };
-
 
 #endif //MYSHELL_SHELL_H
