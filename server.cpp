@@ -83,17 +83,12 @@ int main(){
                     bzero(buffer, sizeof(buffer));
 
                 }
+
             }
 
             close(newSocket);
 
             return 0;
         }
-
     }
-
-
-
-
-
 }
